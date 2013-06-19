@@ -1,6 +1,12 @@
 # CS-3240 Project README
 - Specification Parser + Grammar Parser
 
+## Contributors
+- Stephen Whipple
+- Brendan Byrne
+- Eugene Voronkov
+- Alan Marvel
+
 ## Requirements
 - This program has been tested on Linux and Windows using Java 7; it may also work with Java 6, however it has not been tested:
 OpenJDK Runtime Environment (IcedTea7 2.3.7) (7u15-2.3.7-0ubuntu1~12.10.1)
