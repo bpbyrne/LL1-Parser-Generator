@@ -1,0 +1,12 @@
+begin
+matches = find 'th([a-zA-Z])*' in "input1.txt" union find 'th([a-zA-Z])*' in "input2.txt" union find 'th([a-zA-Z])*' in "input3.txt" union find 'th([a-zA-Z])*' in "input4.txt";
+num = #matches;
+freq = maxfreqstring(matches);
+print (matches, num, freq);
+m2 = find 't([a-zA-Z])*' in "input2.txt" diff find 'th([a-zA-Z])*' in "input2.txt";
+print(m2);
+m3 = find 't([a-zA-Z])*' in "input2.txt" inters find '([a-zA-Z])*t' in "input2.txt";
+print(m3);
+m4 = find 't([a-zA-Z])*' in "input2.txt" diff find '([a-zA-Z])*t' in "input2.txt" union find 'th([a-zA-Z])*' in "input2.txt";
+print(m4);
+end

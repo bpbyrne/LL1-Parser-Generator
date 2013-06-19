@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="CS3240Project2" default="package" basedir=".">
+  <description>Build file for CS-3240 compiler project (part 2)</description>
+
+  <property name="bin" location="bin" />
+  <property name="build" location="build" />
+  <property name="lib" location="lib" />
+  <property name="src" location="src" />
+  <property name="tests" location="tests" />
+  <property name="docs" location="docs" />
+
+  <property name="pkg" value="cs3240project" />
+  <property name="prjzip" location="${bin}/prj.zip"/>
+
+  <property name="package" location="${bin}/parser.jar"/>
+  <property name="grammarpackage" location="${bin}/grammar.jar"/>
+  <property name="driver" value="${pkg}.Driver" />
+  <property name="grammardriver" value="${pkg}.GrammarDriver" />
+
+  <path id="classpath.base">
+    <pathelement location="${src}" />
+  </path>
+  <path id="classpath.testing">
+    <pathelement location="${src}" />
+    <pathelement location="${tests}" />
+    <pathelement location="${lib}/junit.jar" />
+    <pathelement location="${lib}/hamcrest-core.jar" />
+  </path>
+
+  <target name="init">
+    <tstamp />
+    <mkdir dir="${build}" />
+    <mkdir dir="${bin}" />
+    <mkdir dir="${docs}" />
+  </target>
+  
+  <target name="document" depends="init">
+    <javadoc sourcepath="${src}" destdir="${docs}" />
+  </target>
+
+  <target name="compile" depends="init">
+    <echo message="debug: base classpath is ${toString:classpath.base}" />
+    <javac srcdir="${src}" destdir="${build}" classpathref="classpath.base" includeantruntime="false">
+      <compilerarg value="-Xlint:unchecked" />
+    </javac>
+  </target>
+	
+  <target name="package" depends="compile">
+    <jar basedir="${build}" destfile="${package}">
+      <manifest>
+	<attribute name="Main-Class" value="${driver}"/>
+      </manifest>
+    </jar>
+    <jar basedir="${build}" destfile="${grammarpackage}">
+      <manifest>
+	<attribute name="Main-Class" value="${grammardriver}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compiletests" depends="compile">
+    <echo message="debug: testing classpath is ${toString:classpath.testing}" />
+    <javac srcdir="${tests}" destdir="${build}" classpathref="classpath.testing" includeantruntime="false" />
+  </target>
+
+  <target name="runtests" depends="compiletests">
+    <junit>
+      <classpath>
+        <pathelement path="${build}" />
+        <pathelement location="${lib}/junit.jar" />
+        <pathelement location="${lib}/hamcrest-core.jar" />
+      </classpath>
+      <formatter type="brief" usefile="false" />
+      <test name="${pkg}.GrammarTest" />
+      <test name="${pkg}.ParserTest" />
+    </junit>
+  </target>
+
+  <target name="clean" depends="init">
+    <delete dir="${build}" />
+    <delete dir="${bin}" />
+    <delete dir="${docs}" />
+    <delete>
+      <fileset dir="${tests}" includes="*Output" />
+    </delete>
+  </target>
+
+  <target name="distribute" depends="init">
+    <zip destfile="${prjzip}" basedir="." update="true" excludes="${bin}/**" />
+  </target>
+</project>

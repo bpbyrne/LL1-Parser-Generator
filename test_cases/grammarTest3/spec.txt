@@ -1,0 +1,4 @@
+$CLASS [a-zA-Z]
+
+$ID ($CLASS)+
+$OP \+|\-|\*|/

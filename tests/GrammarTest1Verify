@@ -1,0 +1,131 @@
+ When at nonterminal <MiniRE-program>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| begin 		| <MiniRE-program> ::= begin <statement-list> end 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <statement-list>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| replace 		| <statement-list> ::= <statement> <statement-list-tail> 
+| recursivereplace 	| <statement-list> ::= <statement> <statement-list-tail> 
+| ID 			| <statement-list> ::= <statement> <statement-list-tail> 
+| pr.int 		| <statement-list> ::= <statement> <statement-list-tail> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <statement>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| replace 		| <statement> ::= replace REGEX with ASCII-STR in <file-names> ; 
+| recursivereplace 	| <statement> ::= recursivereplace REGEX with ASCII-STR in <file-names> ; 
+| ID 			| <statement> ::= ID = <statement-righthand> ; 
+| pr.int 		| <statement> ::= pr.int ( <exp-list> ) ; 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <statement-list-tail>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| end 			| <statement-list-tail> ::= epsilon 
+| replace 		| <statement-list-tail> ::= <statement> <statement-list-tail> 
+| recursivereplace 	| <statement-list-tail> ::= <statement> <statement-list-tail> 
+| ID 			| <statement-list-tail> ::= <statement> <statement-list-tail> 
+| pr.int 		| <statement-list-tail> ::= <statement> <statement-list-tail> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <file-names>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ASCII-STR 		| <file-names> ::= <source-file> >! <destination-file> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <statement-righthand>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ID 			| <statement-righthand> ::= <exp> 
+| # 			| <statement-righthand> ::= # <exp> 
+| maxfreqstring 	| <statement-righthand> ::= maxfreqstring ( ID ) 
+| ( 			| <statement-righthand> ::= <exp> 
+| find 			| <statement-righthand> ::= <exp> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <exp>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ID 			| <exp> ::= ID 
+| ( 			| <exp> ::= ( <exp> ) 
+| find 			| <exp> ::= <term> <exp-tail> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <source-file>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ASCII-STR 		| <source-file> ::= ASCII-STR 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <destination-file>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ASCII-STR 		| <destination-file> ::= ASCII-STR 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <exp-list>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ID 			| <exp-list> ::= <exp> <exp-list-tail> 
+| ( 			| <exp-list> ::= <exp> <exp-list-tail> 
+| find 			| <exp-list> ::= <exp> <exp-list-tail> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <exp-list-tail>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ) 			| <exp-list-tail> ::= epsilon 
+| , 			| <exp-list-tail> ::= , <exp> <exp-list-tail> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <term>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| find 			| <term> ::= find REGEX in <file-name> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <exp-tail>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ; 			| <exp-tail> ::= epsilon 
+| ) 			| <exp-tail> ::= epsilon 
+| , 			| <exp-tail> ::= epsilon 
+| diff 			| <exp-tail> ::= <bin-op> <term> <exp-tail> 
+| union 		| <exp-tail> ::= <bin-op> <term> <exp-tail> 
+| inters 		| <exp-tail> ::= <bin-op> <term> <exp-tail> 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <bin-op>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| diff 			| <bin-op> ::= diff 
+| union 		| <bin-op> ::= union 
+| inters 		| <bin-op> ::= inters 
+\--------------------------------------------------------------------------
+
+ When at nonterminal <file-name>:
+/--------------------------------------------------------------------------
+|  LL(1) Next Token	| Chosen Derivation
+|--------------------------------------------------------------------------
+| ASCII-STR 		| <file-name> ::= ASCII-STR 
+\--------------------------------------------------------------------------
+

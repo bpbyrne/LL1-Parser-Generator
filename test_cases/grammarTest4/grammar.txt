@@ -1,0 +1,2 @@
+<statement> ::= ID | <statement> ID | <epsilon>
+.

@@ -1,0 +1,3 @@
+<statement> ::= ID <statement-tail>
+<statement-tail> ::= OP ID <statement-tail>  | <epsilon>
+.

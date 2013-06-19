@@ -1,0 +1,47 @@
+# CS-3240 Project README
+- Specification Parser + Grammar Parser
+
+## Requirements
+- This program has been tested on Linux and Windows using Java 7; it may also work with Java 6, however it has not been tested:
+OpenJDK Runtime Environment (IcedTea7 2.3.7) (7u15-2.3.7-0ubuntu1~12.10.1)
+OpenJDK 64-Bit Server VM (build 23.7-b01, mixed mode)
+
+- This program uses Ant to compile:
+Apache Ant(TM) version 1.8.2 compiled on May 18 2012
+
+## Compiling
+- First test to make sure the source compiles on your machine by running the following ant command:
+ant clean compile
+- Then to ensure that all tests compile:
+ant compiletests
+- Then run the included test case and ensure that no failures occur:
+ant runtests
+- If there is some error here, then there may be some classpath issue, however we've gotten it to compile on our machines with the configuration in the ant buildfile.
+
+## Packaging
+- When you've ensured that you can get the code + test cases compiled, run:
+ant clean package
+- This will build and package the part 1 portion of the project into "bin/parser.jar"
+- This will build and package the part 2 portion of the project into "bin/grammar.jar"
+
+## Documentation
+- To run the javadoc task, run:
+ant document
+- The resulting javadocs will be listed under /docs/
+
+## Running
+- To run with a test specification and test input, run:
+java -jar bin/parser.jar <spec file> <input file> <output file>
+- It will run the scanner generator on the spec, then attempt to parse the source
+- Output will be in the format of: <class> <instance>, located in your specified output file
+- Note: the lowercase "error" string is displayed if there was an error parsing a token, but it will try to continue parsing the file anyways, if you use a token that is not recognized as a valid class under the spec, it will correctly display the "error" string as the class (or incorrectly in the case that there is a bug in the code).
+
+- To run with a test grammar as input, run:
+java -jar bin/grammar.jar <grammar file> <output file>
+- It will parse the grammar
+- Output will be in the format of each derivation from each nonterminal based on the next (LL(1)) token
+
+## Redistribution
+- To create a copy of the important files for redistribution (i.e. to turn into t-square) run:
+ant distribute
+- This will create "bin/prj.zip"

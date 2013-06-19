@@ -1,0 +1,96 @@
+# Report
+
+## README
+The README also has some information about the project
+
+## Brief description
+Our project works briefly as follows:
+
+There is a Driver class that holds the main method.  It first invokes the GrammarScanner on the
+grammar file to break the grammar into individual grammar tokens, per line.
+
+It then passes the scanner into the parser that reads the tokens generated to build individual
+NFAs.  These NFAs are formed within the parser, and assigned the identifier that appears on their
+line as their name.
+
+These NFAs are then converted into one large NFA linked at the starting nodes, so they can be
+checked when scanning for input.  This big NFA is algoirthmically converted to a DFATable, using
+epsilon closure and lists to create the mappings.
+
+Afterwards, we use the Table Walker to walk through the input file and ask the DFATable for
+the classification of each token it sees. (there is a small error with our Table Walker
+implementation -- see below).
+
+The Driver takes the output from the walker and writes it to the given output file.
+
+## Assumptions
+Identifiers always start with $
+They consist of uppercase or lowercase alphanumeric characters
+
+
+## Known problems / bugs
+We ran into an issue when parsing whitespace that we never resolved regarding the TableWalker.
+When running through input, the TableWalker can check if the current token is in an error
+state, however it does not know if there is a possibility that it will recover in the future.
+
+For example, given rules matching regex:
+$IDENTIFIER [a-z]*
+$OTHER [0-9]\ *[0-9]\ *a
+$DIGIT [0-9]
+
+We do not know whether or not to include the 'a' in $OTHER or part of an $IDENTIFIER given the
+string:
+
+3 0 abcd
+
+There are many possible parsings of this:
+$DIGIT 3
+$DIGIT 0
+$IDENTFIER abcd
+
+--
+
+$OTHER 3 0 a
+$IDENTIFER bcd
+
+--
+
+error 3 0 ab$cd
+
+... etc
+
+Each of these is possible in LL(1) if we have tokens that could error in the middle, but
+be valid eventually if we kept reading considering further input to be "one token". Above
+we saw that it was invalid (error) until we reached the last 'a' to match the $OTHER token,
+so we must have kept reading and considering all input to be one token to achieve this.
+
+One possibility to solve this would be trying all combinations and choosing the one with the
+least number of errors, however this has exponential growth.
+
+In our TableWalker, we simply break on whitespace to evaluate the validity of a token.
+In the above examples it makes sense to do so, with the exception of checking $OTHER,
+however there are some tokens that don't use whitespace as separators (operators like +, -, /)
+may result in errors that could be looked ahead at, however we never know how far we must
+look ahead to ensure that there isn't a token match eventually.
+
+As a result, our parser will correctly categorize:
+a + b + c
+
+As 5 tokens (identifier and add), whereas it will read:
+a+b +c
+
+As two tokens (errors).
+
+This is likely not the desired behavior, however we were unsure how to verify the end of a
+token without attempting every combination of consecutive characters on a line, then choosing
+among them.
+
+
+## Test cases
+The test cases that we used to check our output for the full parser are located under /tests/.
+
+ParserTest$Spec - the specification used for the test
+ParserTest$Input - the input used for the test
+ParserTest$Verify - what should be output as a result
+
+where $ is a constant number.

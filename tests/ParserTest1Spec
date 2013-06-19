@@ -1,0 +1,17 @@
+$DIGIT [0-9]
+$NONZERO [^0] IN $DIGIT
+$CHAR [a-zA-Z]
+$UPPER [^a-z] IN $CHAR
+$LOWER [^A-Z] IN $CHAR
+$Z [zzzz] %% test multi-z s
+
+%% testing -- should be ignored + - * %%
+$S $UPPER ($Z)* .
+$IDENTIFIER $LOWER ($LOWER|$DIGIT)*
+$INT ($DIGIT)+
+$FLOAT ($DIGIT)+ \. ($DIGIT)+
+$ASSIGN =
+$PLUS \+
+$MINUS -
+$MULTIPLY \*
+$PRINT PRINT

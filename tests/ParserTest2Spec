@@ -1,0 +1,10 @@
+%% testing -- should be ignored + - * %%
+$DIGIT [0-4]
+$DIGIT2 [6-9]
+$ALSODIGIT [^A-Z] IN $DIGIT
+
+%% testing -- should be ignored + - * %%
+$ID1 ($DIGIT)+
+$ID2 ($DIGIT)* ($DIGIT2)+
+$ID3 $DIGIT $ALSODIGIT %% nothing will match this, it is overshadowed by $ID1
+

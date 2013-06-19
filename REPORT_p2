@@ -1,0 +1,67 @@
+# Report (part 2)
+
+## README
+The README also has some information about the project
+
+## Brief description
+Our project works briefly as follows:
+
+(Please see REPORT_p1 for the description of the first part of the project)
+
+There is a GrammarDriver method which takes, as input, an input file which contains
+the grammar is plans to parse, and an output file to display a visual representation
+of the parse table.
+
+The parse table is constructed by first using the GrammarScanner to scan throughout
+the grammar file and generate Tokens that determine how to interpret each instance
+in the grammar file.  These are used by the GrammarParser to construct the first
+and follow sets, as described in the Louden algorithm in the book.  Using the
+first and follow sets, we are able to represent characters that start directly
+before or end a specific rule.
+
+Not included in the project is the ScriptScanner, which was designated to tokenize
+the input from the script file and verify that it matches the grammar and return
+either "yes" (if it reaches the end) or "no" if it reaches a token that is
+invalid based on the first and follow sets as represented in the parse table.
+This was unable to be completed due to an unresolved bug that we discovered in our
+part 1 of the project, where multiple consecutive literal values (e.g. "recursivereplace"
+but not $LETTER $LETTER) don't tokenize correctly, resulting in the inability to
+read the script files.  A description of how it would work if that bug was corrected
+will be presented at our demo. (See the "Known problems" section below for more information
+on the bug).
+
+## Assumptions
+There are spaces between characters and nonterminals/identifieres in the grammar (e.g. ( <exp> ) or ( ID ) instead of (<exp>) or (ID))
+There is a ::= after each nonterminal on the left hand side
+There is a period (.) as the beginning character of the line you want to stop parsing at (at the end of the file usually)
+
+## Known problems / bugs
+
+Currently we don't have a working ScriptScanner, which was supposed to tokenize the
+input from the given script file, then verify that it matches the grammar.  In our
+part 1 submission, there was a bug that missed our test cases causing concatenation of
+literal values (for example in "recursivereplace") to error.  While this was fine for
+small tests that we were running, every script is full of identifiers that have this
+property, so the Scanner will fail to tokenize almost everything in the file. We worked
+to fix this bug, however we didn't have it corrected in time to use in the project.
+
+The general idea behind the scanner is to grab the "init" nonterminal, which in this
+case is always defined as MiniRE-program, then begin tokenizing both it and the program, one
+at a time, in parallel.  Whenever a terminal occurs, check that they match, and if they do
+not then return "no" immediately.  Whenever a nonterminal appears create a new layer on
+the stack and look ahead 1 token to determine the next rule to use.  Continue the comparison
+starting with the first token in that rule and the remaining tokens in the script.  If the
+stack reduces to one level and receives the last matching token from the "init" rule and
+script, return "yes".
+
+## Test cases
+The test cases that we used to check our output for the full spec parser and grammar parser are located under /tests/.
+
+ParserTest$Spec - the specification used for the test
+ParserTest$Input - the input used for the test
+ParserTest$Verify - what should be output as a result
+
+GrammarTest$Input - the grammar used for the test
+GrammarTest$Verify - what should be output as a result
+
+where $ is a constant number.

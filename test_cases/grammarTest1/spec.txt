@@ -1,0 +1,7 @@
+$CLASS [a-zA-Z]
+
+$OTHER other
+$IF if
+$EXP 0 | 1
+$DOLLAR \$
+$PARENS \(|\)

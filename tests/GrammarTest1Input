@@ -1,0 +1,21 @@
+<MiniRE-program> ::= begin <statement-list> end
+<statement-list> ::= <statement><statement-list-tail> 
+<statement-list-tail> ::=  <statement><statement-list-tail> | <epsilon>
+<statement> ::= replace REGEX with ASCII-STR in  <file-names> ;
+<statement>  ::= recursivereplace REGEX with ASCII-STR in  <file-names> ; | ID = <statement-righthand> ;
+<statement-righthand> ::=  <exp> 
+<statement-righthand> ::= # <exp> 
+<statement-righthand>  ::= maxfreqstring ( ID )
+<file-names> ::= <source-file>  >!  <destination-file>
+<source-file>  ::= ASCII-STR  
+<statement>  ::= pr.int ( <exp-list> ) ;
+<destination-file> ::= ASCII-STR
+<exp-list>  ::= <exp> <exp-list-tail>
+<exp-list-tail> ::= , <exp> <exp-list-tail> | <epsilon>
+<exp> ::= ID 
+<exp> ::= ( <exp> ) | <term> <exp-tail>
+<exp-tail> ::=  <bin-op> <term> <exp-tail> | <epsilon>
+<term>   ::= find REGEX in  <file-name>  
+<file-name>  ::= ASCII-STR
+<bin-op>  ::=diff | union | inters
+.  <- this period is important, it signals ^D

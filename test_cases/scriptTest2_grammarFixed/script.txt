@@ -1,0 +1,4 @@
+begin 
+m2 = find 'x' in "input1.txt";
+print ((m2)
+end

@@ -1,0 +1,6 @@
+$NUM [0-9]
+
+$INT ($NUM)*
+$STAR \*
+$PLUS \+
+$PARENS \(|\)
